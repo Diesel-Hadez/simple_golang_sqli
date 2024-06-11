@@ -25,8 +25,9 @@ var db *sql.DB
 func getLogin(w http.ResponseWriter, r *http.Request) {
 	fmt.Printf("got /login request\n")
 	fmt.Println("GET params were: ", r.URL.Query())
-	username := r.URL.Query().Get("username")
-	password := r.URL.Query().Get("password")
+	r.ParseForm()
+	username := r.FormValue("username")
+	password := r.FormValue("password")
 	var counter int
 	queryString := fmt.Sprintf("SELECT count(*) FROM users WHERE username='%s' AND pass='%s'", username, password)
 	db.QueryRow(queryString).Scan(&counter)
