@@ -5,6 +5,7 @@ import (
 	"io"
 	"net/http"
 	"os"
+	"strings"
 )
 
 import (
@@ -30,6 +31,8 @@ func getLogin(w http.ResponseWriter, r *http.Request) {
 	password := r.FormValue("password")
 	var counter int
 	queryString := fmt.Sprintf("SELECT count(*) FROM users WHERE username='%s' AND pass='%s'", username, password)
+	// Dumb blacklist
+	queryString = strings.ReplaceAll(queryString, ";","")
 	db.QueryRow(queryString).Scan(&counter)
 	fmt.Printf("Query: \" %s \" ", queryString)
 	fmt.Printf("found only %d\n", counter)
